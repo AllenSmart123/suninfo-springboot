@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${bussPackage}.dao#if($!entityPackage).${entityPackage}#end.${className}Dao" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="${bussPackage}.model#if($!entityPackage).${entityPackage}#end.$!{className}" >
+#foreach($item in $!{columnDatas})
+	<result column="$!item.columnName" property="$!item.formatColumnName"/>
+#end
+</resultMap>
+       
+<!-- $!{tableName} table all fields -->
+<sql id="Base_Column_List" >
+	 $!{SQL.columnFields}
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Base_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+#foreach($item in $!{columnDatas})
+	#set($testStr = "condition."+$!item.formatColumnName + " != null and condition." + $!item.formatColumnName + " != ''")
+	#if($!item.dataType == 'String')
+		#set($testStr = $!testStr + " and condition." + $!item.formatColumnName + " != ''")
+ 	#end
+<if test="$!testStr" >
+	    and $!item.columnName =  #{condition.$!item.formatColumnName}
+</if>
+#end
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="save${className}" useGeneratedKeys="true" keyProperty="id" parameterType="Object" >
+  $!{SQL.insert}
+</insert>
+
+<!--批量插入记录-->
+<insert id="batchSave${className}s"   parameterType="java.util.List" >
+  $!{SQL.batchInsert}
+</insert>
+
+<!-- 根据id，修改记录-->  
+<update id="update${className}" parameterType="Object" >
+  $!{SQL.update}
+</update>
+ 
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="update${className}BySelective" parameterType="Object" >
+	$!{SQL.updateSelective}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete${className}" parameterType="Object">
+	$!{SQL.delete}
+</delete>
+ 
+<!-- 批量删除记录 -->
+<delete id="batchDel${className}s" parameterType="java.util.List">
+	$!{SQL.batchDelete}
+	<foreach collection="list" index="index" item="ids" open="(" separator="," close=")"> 
+        #{ids}
+    </foreach>
+</delete>
+
+<!-- 根据id查询 ${codeName} -->
+<select id="get${className}ByUuid"  resultMap="BaseResultMap" parameterType="Object">
+	$!{SQL.selectByUuid}
+</select>
+
+<!-- ${codeName} 列表总数-->
+<select id="get${className}ByCount" resultType="java.lang.Integer"  parameterType="Object">
+	SELECT 
+	    count(1) 
+	FROM 
+	    ${tableName} 
+</select>
+  	
+<!-- 查询${codeName}列表 -->
+<select id="get${className}ByList" resultMap="BaseResultMap"  parameterType="Object">
+	SELECT 
+		<include refid="Base_Column_List"/>
+	FROM 
+		${tableName} 
+	<include refid="Base_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       	ORDER BY  ${orderByClause}
+    </if>
+</select>
+
+<!-- 查询${codeName}列表 -->
+<select id="getAll" resultMap="BaseResultMap" >
+	SELECT 
+		<include refid="Base_Column_List"/>
+	FROM 
+		${tableName} 
+</select>
+  	
+</mapper>   

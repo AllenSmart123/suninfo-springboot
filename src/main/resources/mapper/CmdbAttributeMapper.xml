@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suninfo.dao.CmdbAttributeDao" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.suninfo.model.CmdbAttribute" >
+	<result column="id" property="id"/>
+	<result column="uuid" property="uuid"/>
+	<result column="colnumName" property="colnumName"/>
+	<result column="attributeDesc" property="attributeDesc"/>
+	<result column="dataType" property="dataType"/>
+	<result column="htmlType" property="htmlType"/>
+	<result column="isDeleted" property="isDeleted"/>
+	<result column="defaultValue" property="defaultValue"/>
+	<result column="isSyetemAttribute" property="isSyetemAttribute"/>
+	<result column="isDefaultAttribute" property="isDefaultAttribute"/>
+	<result column="isInherent" property="isInherent"/>
+</resultMap>
+       
+<!-- cmdb_attribute table all fields -->
+<sql id="Base_Column_List" >
+	 id,uuid,colnumName,attributeDesc,dataType,htmlType,isDeleted,defaultValue,isSyetemAttribute,isDefaultAttribute,isInherent
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Base_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="condition.id != null and condition.id != ''" >
+	    and id =  #{condition.id}
+</if>
+	<if test="condition.uuid != null and condition.uuid != ''" >
+	    and uuid =  #{condition.uuid}
+</if>
+	<if test="condition.colnumName != null and condition.colnumName != ''" >
+	    and colnumName =  #{condition.colnumName}
+</if>
+	<if test="condition.attributeDesc != null and condition.attributeDesc != ''" >
+	    and attributeDesc =  #{condition.attributeDesc}
+</if>
+	<if test="condition.dataType != null and condition.dataType != ''" >
+	    and dataType =  #{condition.dataType}
+</if>
+	<if test="condition.htmlType != null and condition.htmlType != ''" >
+	    and htmlType =  #{condition.htmlType}
+</if>
+	<if test="condition.isDeleted != null and condition.isDeleted != ''" >
+	    and isDeleted =  #{condition.isDeleted}
+</if>
+	<if test="condition.defaultValue != null and condition.defaultValue != ''" >
+	    and defaultValue =  #{condition.defaultValue}
+</if>
+	<if test="condition.isSyetemAttribute != null and condition.isSyetemAttribute != ''" >
+	    and isSyetemAttribute =  #{condition.isSyetemAttribute}
+</if>
+	<if test="condition.isDefaultAttribute != null and condition.isDefaultAttribute != ''" >
+	    and isDefaultAttribute =  #{condition.isDefaultAttribute}
+</if>
+	<if test="condition.isInherent != null and condition.isInherent != ''" >
+	    and isInherent =  #{condition.isInherent}
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="saveCmdbAttribute" useGeneratedKeys="true" keyProperty="id" parameterType="Object" >
+  INSERT INTO cmdb_attribute(
+  uuid,
+  colnumName,
+  attributeDesc,
+  dataType,
+  htmlType,
+  isDeleted,
+  defaultValue,
+  isSyetemAttribute,
+  isDefaultAttribute,
+  isInherent
+)VALUES(
+  #{uuid},
+  #{colnumName},
+  #{attributeDesc},
+  #{dataType},
+  #{htmlType},
+  #{isDeleted},
+  #{defaultValue},
+  #{isSyetemAttribute},
+  #{isDefaultAttribute},
+  #{isInherent}
+)
+</insert>
+
+<!--批量插入记录-->
+<insert id="batchSaveCmdbAttributes"   parameterType="java.util.List" >
+  INSERT INTO cmdb_attribute(
+  uuid,
+  colnumName,
+  attributeDesc,
+  dataType,
+  htmlType,
+  isDeleted,
+  defaultValue,
+  isSyetemAttribute,
+  isDefaultAttribute,
+  isInherent
+)VALUES
+<foreach collection="list" item="cmdbAttribute" index="index" separator="," >
+(
+  #{cmdbAttribute.uuid},
+  #{cmdbAttribute.colnumName},
+  #{cmdbAttribute.attributeDesc},
+  #{cmdbAttribute.dataType},
+  #{cmdbAttribute.htmlType},
+  #{cmdbAttribute.isDeleted},
+  #{cmdbAttribute.defaultValue},
+  #{cmdbAttribute.isSyetemAttribute},
+  #{cmdbAttribute.isDefaultAttribute},
+  #{cmdbAttribute.isInherent}
+)
+</foreach> 
+</insert>
+
+<!-- 根据id，修改记录-->  
+<update id="updateCmdbAttribute" parameterType="Object" >
+  UPDATE 
+  cmdb_attribute
+SET 
+  uuid=#{uuid},
+  colnumName=#{colnumName},
+  attributeDesc=#{attributeDesc},
+  dataType=#{dataType},
+  htmlType=#{htmlType},
+  isDeleted=#{isDeleted},
+  defaultValue=#{defaultValue},
+  isSyetemAttribute=#{isSyetemAttribute},
+  isDefaultAttribute=#{isDefaultAttribute},
+  isInherent=#{isInherent}
+ WHERE 
+  id=#{id}
+</update>
+ 
+<!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateCmdbAttributeBySelective" parameterType="Object" >
+	UPDATE cmdb_attribute SET 
+	<trim  suffixOverrides="," >
+	<if test="uuid != null  ">
+		uuid=#{uuid},
+	</if>
+	<if test="colnumName != null  ">
+		colnumName=#{colnumName},
+	</if>
+	<if test="attributeDesc != null  ">
+		attributeDesc=#{attributeDesc},
+	</if>
+	<if test="dataType != null  ">
+		dataType=#{dataType},
+	</if>
+	<if test="htmlType != null  ">
+		htmlType=#{htmlType},
+	</if>
+	<if test="isDeleted != null  ">
+		isDeleted=#{isDeleted},
+	</if>
+	<if test="defaultValue != null  ">
+		defaultValue=#{defaultValue},
+	</if>
+	<if test="isSyetemAttribute != null  ">
+		isSyetemAttribute=#{isSyetemAttribute},
+	</if>
+	<if test="isDefaultAttribute != null  ">
+		isDefaultAttribute=#{isDefaultAttribute},
+	</if>
+	<if test="isInherent != null  ">
+		isInherent=#{isInherent},
+	</if>
+	</trim> WHERE id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteCmdbAttribute" parameterType="Object">
+	DELETE FROM cmdb_attribute WHERE  uuid= #{uuid}
+</delete>
+ 
+<!-- 批量删除记录 -->
+<delete id="batchDelCmdbAttributes" parameterType="java.util.List">
+	DELETE FROM cmdb_attribute WHERE uuid IN
+	<foreach collection="list" index="index" item="ids" open="(" separator="," close=")"> 
+        #{ids}
+    </foreach>
+</delete>
+
+<!-- 根据id查询 cmdb_attribute -->
+<select id="getCmdbAttributeByUuid"  resultMap="BaseResultMap" parameterType="Object">
+	SELECT 
+  <include refid="Base_Column_List" />
+ FROM 
+  cmdb_attribute
+ WHERE 
+  uuid = #{id}
+</select>
+
+<!-- cmdb_attribute 列表总数-->
+<select id="getCmdbAttributeByCount" resultType="java.lang.Integer"  parameterType="Object">
+	SELECT 
+	    count(1) 
+	FROM 
+	    cmdb_attribute 
+</select>
+  	
+<!-- 查询cmdb_attribute列表 -->
+<select id="getCmdbAttributeByList" resultMap="BaseResultMap"  parameterType="Object">
+	SELECT 
+		<include refid="Base_Column_List"/>
+	FROM 
+		cmdb_attribute 
+	<include refid="Base_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       	ORDER BY  ${orderByClause}
+    </if>
+</select>
+
+<!-- 查询cmdb_attribute列表 -->
+<select id="getAll" resultMap="BaseResultMap" >
+	SELECT 
+		<include refid="Base_Column_List"/>
+	FROM 
+		cmdb_attribute 
+</select>
+  	
+</mapper>   
