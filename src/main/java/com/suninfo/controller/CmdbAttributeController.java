@@ -36,7 +36,6 @@ public class CmdbAttributeController {
 	@RequestMapping("/list")
 	@ResponseBody
 	public List<CmdbAttribute>  list(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		System.out.println(23);
 		return cmdbAttributeService.getAll();
 	}
 	
